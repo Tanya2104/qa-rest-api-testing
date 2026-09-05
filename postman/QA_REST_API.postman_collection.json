@@ -1,0 +1,614 @@
+{
+  "info": {
+    "_postman_id": "864b45bb-a534-4ac0-a17a-qa-rest-api",
+    "name": "QA REST API",
+    "description": "Runnable functional and negative checks for the QA Portfolio Shop API. Run create requests before dependent requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users",
+            "description": "POST /users; expected HTTP 201.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"QA User\", \"email\": \"qa.user@example.com\", \"age\": 30, \"password\": \"password123\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());",
+                  "const data = pm.response.json(); pm.expect(data).to.have.property(\"id\"); pm.environment.set(\"user_id\", data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users",
+            "description": "GET /users; expected HTTP 200."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "description": "GET /users/{{user_id}}; expected HTTP 200."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "description": "PUT /users/{{user_id}}; expected HTTP 200.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Updated QA\", \"email\": \"qa.user@example.com\", \"age\": 30, \"password\": \"password123\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "description": "DELETE /users/{{user_id}}; expected HTTP 204."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/products",
+            "description": "POST /products; expected HTTP 201.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Keyboard\", \"price\": 25.5, \"stock\": 10}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());",
+                  "const data = pm.response.json(); pm.expect(data).to.have.property(\"id\"); pm.environment.set(\"product_id\", data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/products",
+            "description": "GET /products; expected HTTP 200."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/products/{{product_id}}",
+            "description": "GET /products/{{product_id}}; expected HTTP 200."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/products/{{product_id}}",
+            "description": "PUT /products/{{product_id}}; expected HTTP 200.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Keyboard\", \"price\": 25.5, \"stock\": 20}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/products/{{product_id}}",
+            "description": "DELETE /products/{{product_id}}; expected HTTP 204."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/orders",
+            "description": "POST /orders; expected HTTP 201.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"user_id\": \"{{user_id}}\", \"product_id\": \"{{product_id}}\", \"quantity\": 2}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());",
+                  "const data = pm.response.json(); pm.expect(data).to.have.property(\"id\"); pm.environment.set(\"order_id\", data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/orders",
+            "description": "GET /orders; expected HTTP 200."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/orders/{{order_id}}",
+            "description": "GET /orders/{{order_id}}; expected HTTP 200."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/orders/{{order_id}}",
+            "description": "DELETE /orders/{{order_id}}; expected HTTP 204."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Successful Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/login",
+            "description": "POST /login; expected HTTP 200.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"qa.user@example.com\", \"password\": \"password123\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Invalid Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/login",
+            "description": "POST /login; expected HTTP 401.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"qa.user@example.com\", \"password\": \"incorrect\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Negative Tests",
+      "item": [
+        {
+          "name": "Duplicate Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users",
+            "description": "POST /users; expected HTTP 409.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"QA User\", \"email\": \"qa.user@example.com\", \"age\": 30, \"password\": \"password123\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Invalid Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users",
+            "description": "POST /users; expected HTTP 422.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"QA User\", \"email\": \"bad\", \"age\": 30, \"password\": \"password123\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 422\", () => pm.response.to.have.status(422));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Zero Price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/products",
+            "description": "POST /products; expected HTTP 422.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Keyboard\", \"price\": 0, \"stock\": 10}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 422\", () => pm.response.to.have.status(422));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/users/999999",
+            "description": "GET /users/999999; expected HTTP 404."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Missing Login Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/login",
+            "description": "POST /login; expected HTTP 422.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"qa.user@example.com\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 422\", () => pm.response.to.have.status(422));",
+                  "pm.test(\"Response time under 1000 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1000));",
+                  "pm.test(\"JSON content type\", () => pm.response.to.have.header(\"Content-Type\", /application\\/json/));",
+                  "pm.test(\"Valid JSON response\", () => pm.expect(() => pm.response.json()).not.to.throw());"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
